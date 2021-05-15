@@ -11,6 +11,7 @@
 - [相关数学知识](/src/01.base/math.md)
 - [数据类型](/src/01.base/type.md)
 - [指针](/src/01.base/pointer.md)
+- [内存管理](/src/01.base/memory.md)
 - [结构体](/src/01.base/struct.md)
 
 ### 数据结构
@@ -18,3 +19,5 @@
 - 线性表
     - [顺序表（静态）](/src/02.linearlist/sq_list_static.c)
     - [顺序表（动态）](/src/02.linearlist/sq_list_dynamic.c)
+    - [单链表（无头结点）](/src/02.linearlist/sl_list_nohead.c)
+    - [单链表（有头结点）](/src/02.linearlist/sl_list_head.c)

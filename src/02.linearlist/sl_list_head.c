@@ -13,7 +13,7 @@ typedef struct LNode {
 
 // 打印单链表
 void PrintSingleLInkList (SingleLinkList L);
-// 构建单链表（头插法）
+// 构建单链表（头插法）（头插法的思想可以用于链表逆置，即边扫描边头插）
 SingleLinkList InitSingleLinkListOnHead (SingleLinkList L, int num);
 // 构建单链表（尾插法）
 SingleLinkList InitSingleLinkListOnTail (SingleLinkList L, int num);
@@ -25,6 +25,8 @@ LNode *LocateElem (SingleLinkList L, int data);
 SingleLinkList Insert (SingleLinkList L, int i, int data);
 // 按位删除
 BOOL Delete (SingleLinkList L, int i, int *res);
+// 单链表的逆置
+SingleLinkList Reverse (SingleLinkList L);
 
 int main () {
     SingleLinkList L = NULL;
@@ -47,6 +49,9 @@ int main () {
         printf("delete success: \n", res);
         PrintSingleLInkList(L);
     }
+    printf("Reverse: \n");
+    SingleLinkList other = Reverse(L);
+    PrintSingleLInkList(other);
     return 0;
 }
 
@@ -162,4 +167,21 @@ BOOL Delete (SingleLinkList L, int i, int *res) {
     p->next = node->next;
     free(node);
     return TRUE;
+}
+
+SingleLinkList Reverse (SingleLinkList L) {
+    if (L == NULL) return NULL;
+    // 为新链表创建头结点
+    LNode *head = (LNode *)malloc(sizeof(LNode));
+    head->next = NULL;
+    // 边遍历，边头插
+    LNode *curr = L->next;
+    while (curr != NULL) {
+        LNode *node = (LNode *)malloc(sizeof(LNode));
+        node->data = curr->data;
+        node->next = head->next;
+        head->next = node;
+        curr = curr->next;
+    }
+    return head;
 }
