@@ -27,6 +27,8 @@ SingleLinkList Insert (SingleLinkList L, int i, int data);
 BOOL Delete (SingleLinkList L, int i, int *res);
 // 单链表的逆置
 SingleLinkList Reverse (SingleLinkList L);
+// 基本操作（在某个结点之后插入）
+void InsertNext (LNode *p, int data);
 
 int main () {
     SingleLinkList L = NULL;
@@ -184,4 +186,12 @@ SingleLinkList Reverse (SingleLinkList L) {
         curr = curr->next;
     }
     return head;
+}
+
+void InsertNext (LNode *p, int data) {
+    if (p == NULL) return;
+    LNode *node = (LNode *)malloc(sizeof(LNode));
+    node->data = data;
+    node->next = p->next;
+    p->next = node;
 }
