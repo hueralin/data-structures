@@ -24,3 +24,4 @@
     - [双链表（有头结点）](/src/02.linearlist/dl_list_head.c)
     - [循环单链表（有头结点）](/src/02.linearlist/cl_list_head.c)
     - [链表需要注意的代码问题](/src/02.linearlist/linklist_note.md)
+    - [静态链表](/src/02.linearlist/static_linklist.c)
