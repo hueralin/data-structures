@@ -16,25 +16,38 @@
     - 单链表：
         - 插入：`node->next = p->next; p->next = node;`
         - 删除：`p->next = node->next; free(node);`
-    - 双链表：
+    - 双链表，要考虑待操作结点的下一个结点是否为 NULL 的情况
         - 插入：
             ```c++
-                node->next = p->next;
-                node->prev = p;
-                // 需要考虑待插入位置的下一个结点是否为 NULL
-                if (p->next != NULL) {
-                    p->next->prev = node;
-                }
-                p->next = node;
+            node->next = p->next;
+            node->prev = p;
+            // 需要考虑待插入位置的下一个结点是否为 NULL
+            if (p->next != NULL) {
+                p->next->prev = node;
+            }
+            p->next = node;
             ```
         - 删除：
             ```c++
-                p->next = node->next;
-                // 需要考虑待删除结点的下一个结点是否为 NULL
-                if (node->next != NULL) {
-                    node->next->prev = p;
-                }
-                free(node);
+            p->next = node->next;
+            // 需要考虑待删除结点的下一个结点是否为 NULL
+            if (node->next != NULL) {
+                node->next->prev = p;
+            }
+            free(node);
             ```
-    - 双链表要考虑待操作结点的下一个结点是否为 NULL 的情况
-    - 循环双链表，因为是个环，所以没有 next 为 NULL 的结点，所以不需要考虑待作结点的下一个结点是否为 NULL
+    - 循环双链表，因为是个环，所以没有 next 为 NULL 的结点，所以不需要考虑待操作结点的下一个结点是否为 NULL
+        - 插入：
+            ```c++
+            node->next = p->next;
+            node->prev = p;
+            // 注意下面的顺序不能反
+            p->next->prev = node;
+            p->next = node;
+            ```
+        - 删除：
+            ```c++
+            node->next->prev = p;
+            p->next = node->next;
+            free(node);
+            ```
