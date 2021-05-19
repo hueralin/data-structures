@@ -17,21 +17,27 @@ void ReverseNoExtra (SingleLinkList head);
 void IncreaseSort (SingleLinkList head);
 void DeleteRange (SingleLinkList head, int start, int end);
 Node *FindCommonNode (SingleLinkList headA, SingleLinkList headB);
+SingleLinkList separateList (SingleLinkList head);
+SingleLinkList separateList2 (SingleLinkList A);
+int GetLen (SingleLinkList head);
 
 int main () {
     SingleLinkList head = NULL;
-    head = InitSingleLinkListOnHead(head, 5);
+    head = InitSingleLinkListOnHead(head, 6);
     // Insert(head, 6, 3);
     // PrintSingleLInkList(head);
     // printf("\n");
     // deleteNode(head, 3);
-    PrintSingleLInkList(head);
-    printf("\n");
+    // PrintSingleLInkList(head);
+    // printf("\n");
     // SingleLinkList newList = Reverse(head);
     // DeleteMin(head);
     // ReverseNoExtra(head);
-    DeleteRange(head, 1, 4);
+    // DeleteRange(head, 1, 4);
+    SingleLinkList B = separateList2(head);
     PrintSingleLInkList(head);
+    printf("\n");
+    PrintSingleLInkList(B);
     return 0;
 }
 
@@ -221,53 +227,103 @@ Node *FindCommonNode (SingleLinkList headA, SingleLinkList headB) {
     if (headA == NULL || headB == NULL) return NULL;
     if (headA->next == NULL || headB->next == NULL) return NULL;
     // 计算 A、B 的长度
-    int lenA = 0;
-    int lenB = 0;
-    Node *curr = headA->next;
-    while (curr != NULL) {
-        lenA++;
-        curr = curr->next;
-    }
-    curr = headB->next;
-    while (curr != NULL) {
-        lenB++;
-        curr = curr->next;
-    }
-    // 计算差
+    int lenA = GetLen(headA);
+    int lenB = GetLen(headB);
     int step = 0;
+    Node *longList, *shortList;
     if (lenA > lenB) {
         step = lenA - lenB;
+        longList = headA->next;
+        shortList = headB->next;
     } else {
         step = lenB - lenA;
+        longList = headB->next;
+        shortList = headA->next;
     }
-    // 长的链表前进 step 步
+    while (step > 0) {
+        longList = longList->next;
+        step--;
+    }
+    while (longList != NULL) {
+        if (longList == shortList) {
+            return longList;
+        } else {
+            longList = longList->next;
+            shortList = shortList->next;
+        }
+    }
+    return NULL;
+}
+
+int GetLen (SingleLinkList head) {
+    if(head == NULL || head->next == NULL) return 0;
+    int len = 0;
+    Node *curr = head->next;
+    while (curr != NULL) {
+        len++;
+        curr = curr->next;
+    }
+    return len;
+}
+
+SingleLinkList separateList (SingleLinkList A) {
+    if (A == NULL || A->next == NULL) return NULL;
     int i = 0;
-    if (lenA > lenB) {
-        curr = headA->next;
-        while (i < step) {
-            curr = curr->next;
-            i++;
+    // 新的头结点
+    Node *B = (Node *)malloc(sizeof(Node));
+    B->next = NULL;
+    // 工作指针，用于遍历 A
+    Node *curr = A->next;
+    // 尾插法，用尾结点
+    Node *rearA = A;
+    Node *rearB = B;
+    // 遍历 A，将奇数序号结点尾插入 A，偶数序号结点尾插入 B
+    while (curr != NULL) {
+        printf("xx\n");
+        i++;
+        if (i % 2 != 0) {
+            rearA->next = curr;
+            rearA = curr;
+        } else {
+            rearB->next = curr;
+            rearB = curr;
         }
-    } else {
-        curr = headB->next;
-        while (i < step) {
-            curr = curr->next;
-            i++;
+        curr = curr->next;
+    }
+    // 记得将 A、B 的尾指针的 next 置空
+    // 否则还会和之前的链表有关联
+    // 如：
+    // A：5->3->1->null
+    // B：4->2->1->NULL（按理说 B 应该只有 4->2，但是 2 还保留着之前的链接关系）
+    rearA->next = NULL;
+    rearB->next = NULL;
+    return B;
+}
+
+SingleLinkList separateList2 (SingleLinkList A) {
+    if (A == NULL || A->next == NULL) return NULL;
+    int i = 0;
+    // 偶数头插
+    Node *B = (Node *)malloc(sizeof(Node));
+    B->next = NULL;
+    // 奇数尾插
+    Node *rearA = A;
+    Node *curr = A->next;
+    Node *tmp = NULL;
+    while (curr != NULL) {
+        i++;
+        // 注意缓存下 curr->next
+        tmp = curr->next;
+        if (i % 2 != 0) {
+            rearA->next = curr;
+            rearA = curr;
+        } else {
+            curr->next = B->next;
+            B->next = curr;
         }
+        curr = tmp;
     }
-    // 边遍历、边比较
-    Node *pA = NULL;
-    Node *pB = NULL;
-    if (lenA > lenB) {
-        pA = curr;
-    } else {
-        pB = curr;
-    }
-    while (pA != NULL && pB != NULL && pA != pB) {
-        pA = pA->next;
-        pB = pB->next;
-    }
-    if (pA == NULL) return pA;
-    if (pB == NULL) return pB;
-    return pA;
+    // 摘链尾插时，尾结点记得清空以前的链接关系
+    rearA->next = NULL;
+    return B;
 }
