@@ -35,7 +35,7 @@ int main () {
 
 **free 函数** `void free(void *address);`
 
-在不需要内存时，都应该调用 free() 来释放内存。
+在不需要内存时，都应该调用 free() 来释放内存。free(ptr) 不会改变 ptr 变量本身的值，调用 free() 后它仍然会指向相同的内存空间，free(ptr) 仅仅是告知系统，这块堆空间我不要了。系统是立即回收，还是以后回收，那是系统的事。所以建议将 ptr 的值设置为 NULL。
 
 ```c++
 #include <stdio.h>
