@@ -28,3 +28,4 @@
     - [顺序栈](/src/03.stack/sq_stack.c)
     - [链栈（有头结点）](/src/03.stack/list_stack_head.c)
     - [链栈（无头结点）](/src/03.stack/list_stack_nohead.c)
+    - [顺序队列](/src/04.queue/sq_queue.c)
