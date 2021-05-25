@@ -29,3 +29,5 @@
     - [链栈（有头结点）](/src/03.stack/list_stack_head.c)
     - [链栈（无头结点）](/src/03.stack/list_stack_nohead.c)
     - [顺序队列](/src/04.queue/sq_queue.c)
+    - [链式队列（有头结点）](/src/04.queue/link_queue_head.c)
+    - [链式队列（无头结点）](/src/04.queue/link_queue_nohead.c)
